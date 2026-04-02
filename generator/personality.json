@@ -1,0 +1,82 @@
+[
+    {
+        "Name": "Nishit",
+        "Active Hours": [
+            [
+                9,
+                12
+            ],
+            [
+                18,
+                23
+            ]
+        ],
+        "Yapperness": 0.7,
+        "Average Message Length": 8,
+        "Ghoster": 0.6
+    },
+    {
+        "Name": "Shreyas",
+        "Active Hours": [
+            [
+                10,
+                16
+            ],
+            [
+                20,
+                24
+            ]
+        ],
+        "Yapperness": 0.3,
+        "Average Message Length": 3,
+        "Ghoster": 0.7
+    },
+    {
+        "Name": "Utkarsh",
+        "Active Hours": [
+            [
+                8,
+                14
+            ],
+            [
+                17,
+                20
+            ]
+        ],
+        "Yapperness": 0.5,
+        "Average Message Length": 10,
+        "Ghoster": 0.3
+    },
+    {
+        "Name": "Meka",
+        "Active Hours": [
+            [
+                5,
+                10
+            ],
+            [
+                14,
+                18
+            ]
+        ],
+        "Yapperness": 0.4,
+        "Average Message Length": 3,
+        "Ghoster": 0.9
+    },
+    {
+        "Name": "Madhu",
+        "Active Hours": [
+            [
+                9,
+                12
+            ],
+            [
+                14,
+                19
+            ]
+        ],
+        "Yapperness": 0.35,
+        "Average Message Length": 3,
+        "Ghoster": 0.9
+    }
+]

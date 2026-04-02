@@ -1,4 +1,7 @@
 # whatsapp-wrapped
+## Usage
+
+To generate the chat run python3 generator/chat.py and the output chat.txt file will be generated in project directory.
 
 ## Design/Implementation Overview
 
