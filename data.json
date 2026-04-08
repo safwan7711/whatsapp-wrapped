@@ -1,0 +1,48 @@
+{
+  "group": {
+    "busiest_day": "2026-03-31",
+    "longest_silence": 6,
+    "night_owl": "Meka",
+    "ghost": "Meka",
+    "hype_person": "Nishit",
+    "conversation_starters": "Meka"
+  },
+  "persons": {
+    "Meka": {
+      "total_messages": 9,
+      "total_words": 20,
+      "most_used_emojis": [
+        "🥲"
+      ],
+      "avg_response_time": 140.0
+    },
+    "Utkarsh": {
+      "total_messages": 13,
+      "total_words": 125,
+      "most_used_emojis": [
+        "😭",
+        "💀",
+        "🤡"
+      ],
+      "avg_response_time": 36.0
+    },
+    "Nishit": {
+      "total_messages": 18,
+      "total_words": 151,
+      "most_used_emojis": [],
+      "avg_response_time": 19.5
+    },
+    "Shreyas": {
+      "total_messages": 6,
+      "total_words": 14,
+      "most_used_emojis": [],
+      "avg_response_time": 104.5
+    },
+    "Madhu": {
+      "total_messages": 7,
+      "total_words": 17,
+      "most_used_emojis": [],
+      "avg_response_time": 110.5
+    }
+  }
+}
