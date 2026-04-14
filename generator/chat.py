@@ -2,18 +2,16 @@ import os
 import json
 import datetime
 import numpy as np
+import sys
 # The chat generation can be done well with np.random.choice(cuz there is a probability option)
 # 
 class Generator:
     def __init__(self, personjson="personality.json", vocab="../vocabulary.txt",output="../chat.txt"):
         #The initializer for the generator class will create the vocabulary and 
         self.log=[]
-        if os.path.exists(personjson):
+        if self.file_check(personjson):
             with open(personjson,'r') as x:
-                ##TODO: Create a function to verify if file is of correct format
                 self.personality = json.load(x)
-        else:
-            raise FileNotFoundError(f"The personality.json file is not present in the specified location")
         if os.path.exists(vocab):
             with open(vocab,'r') as x:
                 self.vocab = x.read().strip().split(',')
@@ -24,6 +22,18 @@ class Generator:
             print(f"Output File missing.... \n Creating a new file....")
         else:
             print(f"Output File found ....")
+    def file_check(self,path="personality.json"):
+        if os.path.exists(path):
+            with open(path,'r') as x:
+                try:
+                    y = json.load(x)
+                except json.JSONDecodeError:
+                    print(f"The personality.json file is not a correct JSON file, try again")
+                    return False
+        else:
+            raise FileNotFoundError(f"The vocabulary.txt file is not present in the specified location")
+        return True
+
     def gen_message(self,length):
         # Generates a message
         # For now I will use a simple np.random to generate the message
@@ -90,7 +100,7 @@ class Generator:
                     #Maximum time between messages can be 2 hrs
                     ghost = True
                 if ghost:
-                    time += datetime.timedelta(minutes=np.random.randint(30, 50))
+                    time += datetime.timedelta(minutes=np.random.randint(20, 30))
                     continue
                 rep_prob = [0 for i in range(min(len(self.log),7))]
                 send_index = 0
@@ -111,7 +121,9 @@ class Generator:
                         rep_prob[i] = yappuh_matrix[send_index][index]
                         if np.random.random()*(1.3*sum(rep_prob)) > sum(rep_prob):
                             reply = True
-                            
+                if((self.log[-1]['time']-time).total_seconds()>10800):
+                    #Can't reply to a message sent over 3 hrs ago
+                    reply= False           
                 if reply:
                     prob_sum = sum(rep_prob)
                     #Normalize the probability distribution so that it adds up to 1
@@ -143,7 +155,7 @@ class Generator:
                 time += datetime.timedelta(minutes=np.random.randint(1, 3))
             else:
                 # Slower progression for new independent thoughts
-                time += datetime.timedelta(minutes=np.random.randint(5, 27))
+                time += datetime.timedelta(minutes=np.random.randint(5, 10))
 
     def export(self):
         #Formats self.log and writes it to chat.txt
@@ -153,5 +165,15 @@ class Generator:
             lines.append(f"[{timestamp}] {i['name']} {i['tag']}{i["reply to"]}: {i['content']}\n")
         with open(self.output,'w') as x:
             x.writelines(lines)
-generator = Generator()
-generator.gen_chat(3)
+# sys arguments to make it seem like a proper cli script
+if len(sys.argv) == 0:
+    generator = Generator()
+    generator.gen_chat(7)
+elif len(sys.argv) == 1:
+    generator = Generator(sys.argv[0])
+    generator.gen_chat(7)
+elif len(sys.argv) == 2:
+    generator = Generator(sys.argv[0])
+    generator.gen_chat(sys.argv[1])
+else:
+    print(f"You are using the wrong syntax for this command\n Correct usage is python3 chat.py [PATH] [DURATION]")
