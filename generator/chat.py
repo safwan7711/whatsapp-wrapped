@@ -166,14 +166,14 @@ class Generator:
         with open(self.output,'w') as x:
             x.writelines(lines)
 # sys arguments to make it seem like a proper cli script
-if len(sys.argv) == 0:
+if len(sys.argv) == 1:
     generator = Generator()
     generator.gen_chat(7)
-elif len(sys.argv) == 1:
-    generator = Generator(sys.argv[0])
-    generator.gen_chat(7)
 elif len(sys.argv) == 2:
-    generator = Generator(sys.argv[0])
-    generator.gen_chat(sys.argv[1])
+    generator = Generator(vocab=sys.argv[1])
+    generator.gen_chat(7)
+elif len(sys.argv) == 3:
+    generator = Generator(vocab=sys.argv[1])
+    generator.gen_chat(int(sys.argv[2]))
 else:
     print(f"You are using the wrong syntax for this command\n Correct usage is python3 chat.py [PATH] [DURATION]")
