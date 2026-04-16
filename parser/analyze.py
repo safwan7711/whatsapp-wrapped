@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 def parse_message(filename):
     #TODO:parse the message by matching the pattern 
     # and return a list of dictionaries with datetime, sender, message, reply_to.
-    pattern = r'\[(\d{2}/\d{2}/\d{4}), (\d{2}:\d{2}:\d{2})\] (\w+) \[(?:REPLY TO\] (\w+)|INDEPENDENT\]): (.+)' # regex pattern 
+    pattern = r'^\[(\d{2}/\d{2}/\d{4}), (\d{2}:\d{2}:\d{2})\] ([^\[]+) \[(?:REPLY TO\] ([^:]+)|INDEPENDENT\]):\s*(.*)$' # regex pattern 
     messages =[]
     with open(filename, 'r',encoding='utf-8') as f:
         lines = f.readlines()
@@ -51,7 +51,7 @@ def night_owl(messages):
     night_owlDict = {}
     for message in messages:
         hour = message['datetime'].hour
-        if hour >=0 and hour <= 5: # Consider messages sent between 12 AM and 5 AM as night owl messages
+        if hour >=0 and hour <= 4: # Consider messages sent between 12 AM and 4 AM as night owl messages
             sender = message['sender']
             if sender in night_owlDict:
                 night_owlDict[sender]+=1
@@ -74,41 +74,52 @@ def ghost(messages):
                 reply_count[reply_to] = 1
     message_count = total_messages(messages)
     ghost_dict = {
-        person: reply_count[person] /message_count[person]
+        person: reply_count.get(person, 0)  # calculate default to 0 if no replies
         for person in message_count
     }
     ghost_guy= sorted(ghost_dict.items(), key = lambda x: x[1])[0][0]
     return ghost_guy   
 
 def conversation_starters(messages,x,y,time_range):
-    #TODO: find the convo starter, that we define as it s proportional to the time gap**x
+    #TODO: find the convo starter, that we define as it's proportional to the time gap**x
     # and the no of time that person has started a conversation**y. 
     # Time range is the minimum time gap in hours to consider for a conversation starter.
+
+    if not messages:
+        return None
+
     prev_dict = messages[0]
     freq_dict = {} # contains the sender key and a list of freq of messages in the time ranges
-    for message in messages:
+
+    for message in messages[1:]:# start from the second message as we are comparing with the previous message
         sender = message['sender']
         #find time gap between current message and previous message
         time_gap =(message['datetime']-prev_dict['datetime']).total_seconds()/3600 
         n = int(time_gap//time_range)
-        if n == 0: # if gap is less than time_range ignore
-            continue
-        if sender in freq_dict:
-            # freq_list contains the list of frequencies for a sender in the loop
-            freq_list = freq_dict[sender]
-            # extend the list if n > curr len of freq_list
-            if n>=len(freq_list):
-                freq_list += [0 for i in range(n-len(freq_list)+1)]
-            freq_list[n]+=1
-        else:
-            freq_list =[0 for  i in range(n)]+[1]
-            freq_dict[sender] = freq_list
+
+        if n != 0: # if gap is at least time_range
+            if sender in freq_dict:
+                # freq_list contains the list of frequencies for a sender in the loop
+                freq_list = freq_dict[sender]
+                # extend the list if n > curr len of freq_list
+                if n>=len(freq_list):
+                    freq_list += [0 for i in range(n-len(freq_list)+1)]
+                freq_list[n]+=1
+            else:
+                freq_list =[0 for  i in range(n)]+[1]
+                freq_dict[sender] = freq_list
+
         prev_dict = message
+
+    if not freq_dict:
+        return None
+
     convo_dict = {}
     for sender, freq_list in freq_dict.items():
         convo_dict[sender] = 0 # initialize to 0
         for i in range(len(freq_list)):
-            convo_dict[sender] += i**x +freq_list[i]**y
+            convo_dict[sender] += (i*time_range)**x * freq_list[i]**y
+
     convo_guy = sorted(convo_dict.items(), key = lambda x: x[1], reverse=True)[0][0]
     return convo_guy
 
@@ -148,12 +159,13 @@ def most_used_emojis(messages):
 def busiest_day(messages):
     mess_day_dict ={}
     for message in messages:
-        day = message['datetime'].strftime("%Y-%m-%d") # in str format
+        day = message['datetime'].strftime("%d/%m/%Y") # in str format
         if day in mess_day_dict:
             mess_day_dict[day]+=1
         else:
             mess_day_dict[day]=1
-    busiest_day = sorted(mess_day_dict.items(), key = lambda x :x[1], reverse =True)[0][0]
+    busiest_day = sorted(mess_day_dict.items(), key = lambda x :(-x[1], datetime.strptime(x[0], "%d/%m/%Y")))[0][0]
+    # sorting by count in descending order and then by date in ascending order to get the earliest day in case of tie
     return busiest_day
 
 def longest_silence(messages):
@@ -206,6 +218,23 @@ def hype_person(messages):
     hype_guy = sorted(median_resp_time.items(), key = lambda x: x[1])[0][0]
     return hype_guy
 
+def activity_concentration(messages):
+    # CUSTOM STAT
+    # how concentrated is each person's messaging across hours?
+    persons = list(set(msg['sender'] for msg in messages))
+    activity = np.zeros((len(persons), 24))
+    
+    for msg in messages:
+        i = persons.index(msg['sender'])
+        activity[i, msg['datetime'].hour] += 1
+    
+    # norm of each person's 24-hour activity vector
+    # higher norm = more concentrated in specific hours
+    # lower norm = more evenly spread across hours
+    norms = np.linalg.norm(activity, axis=1)  # shape (n,)
+    conc_dict = {persons[i]: round(float(norms[i]), 2) for i in range(len(persons))}
+    return conc_dict
+
 def json_format(messages):
     output = {
         "group": {
@@ -214,7 +243,7 @@ def json_format(messages):
             "night_owl": night_owl(messages),
             "ghost": ghost(messages),
             "hype_person": hype_person(messages),
-            "conversation_starters": conversation_starters(messages,1,2,4),
+            "conversation_starters": conversation_starters(messages,1,2,4),# time range of 4 hours.
         },
         "persons": {}
     }
@@ -223,7 +252,8 @@ def json_format(messages):
             "total_messages": total_messages(messages).get(person, 0),
             "total_words": total_words(messages).get(person, 0),
             "most_used_emojis": most_used_emojis(messages).get(person, []),
-            "avg_response_time": avg_response_time(messages).get(person, 0)
+            "avg_response_time": avg_response_time(messages).get(person, 0),
+            "activity_concentration": activity_concentration(messages).get(person, 0)
         }
     return output
  
@@ -237,17 +267,6 @@ def main():
     with open('data.json', 'w') as f:
         json.dump(output_stats, f, ensure_ascii=False, indent=2)# ensure_ascii=False to preserve emojis
 
-# just for testing the functions
-    """ print(total_messages(messages))
-    print(total_words(messages))
-    print(night_owl(messages))
-    print(ghost(messages))
-    print(conversation_starters(messages,1,2,4))
-    print(most_used_emojis(messages))
-    print(busiest_day(messages))
-    print(longest_silence(messages))
-    print(avg_response_time(messages))
-    print(hype_person(messages)) """
     
 if __name__ == "__main__":
     main() 
