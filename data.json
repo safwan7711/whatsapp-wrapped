@@ -1,11 +1,167 @@
 {
   "group": {
-    "busiest_day": "01/04/2026",
+    "busiest_days": [
+      [
+        "01/04/2026",
+        42
+      ],
+      [
+        "11/04/2026",
+        37
+      ],
+      [
+        "04/04/2026",
+        36
+      ],
+      [
+        "08/04/2026",
+        34
+      ],
+      [
+        "05/04/2026",
+        31
+      ]
+    ],
     "longest_silence": 7,
-    "night_owl": "No night owls found",
-    "ghost": "Madhu",
-    "hype_person": "Nishit",
-    "conversation_starters": "Meka"
+    "night_owls": [],
+    "ghosts": [
+      [
+        "Madhu",
+        30
+      ],
+      [
+        "Meka",
+        58
+      ],
+      [
+        "Shreyas",
+        60
+      ],
+      [
+        "Utkarsh",
+        140
+      ],
+      [
+        "Nishit",
+        142
+      ]
+    ],
+    "hype_persons": [
+      [
+        "Nishit",
+        26.0
+      ],
+      [
+        "Utkarsh",
+        30.5
+      ],
+      [
+        "Meka",
+        44.5
+      ],
+      [
+        "Shreyas",
+        49.0
+      ],
+      [
+        "Madhu",
+        114.0
+      ]
+    ],
+    "conversation_starters": [
+      [
+        "Meka",
+        2700
+      ],
+      [
+        "Madhu",
+        512
+      ],
+      [
+        "Shreyas",
+        392
+      ],
+      [
+        "Utkarsh",
+        288
+      ],
+      [
+        "Nishit",
+        128
+      ]
+    ],
+    "person_achievements": {
+      "Shreyas": [
+        [
+          "Ghost",
+          3
+        ],
+        [
+          "Hype person",
+          4
+        ],
+        [
+          "Conversation starter",
+          3
+        ]
+      ],
+      "Nishit": [
+        [
+          "Ghost",
+          5
+        ],
+        [
+          "Hype person",
+          1
+        ],
+        [
+          "Conversation starter",
+          5
+        ]
+      ],
+      "Utkarsh": [
+        [
+          "Ghost",
+          4
+        ],
+        [
+          "Hype person",
+          2
+        ],
+        [
+          "Conversation starter",
+          4
+        ]
+      ],
+      "Meka": [
+        [
+          "Ghost",
+          2
+        ],
+        [
+          "Hype person",
+          3
+        ],
+        [
+          "Conversation starter",
+          1
+        ]
+      ],
+      "Madhu": [
+        [
+          "Ghost",
+          1
+        ],
+        [
+          "Hype person",
+          5
+        ],
+        [
+          "Conversation starter",
+          2
+        ]
+      ]
+    }
   },
   "persons": {
     "Nishit": {
@@ -17,7 +173,21 @@
         "😢"
       ],
       "avg_response_time": 26.0,
-      "activity_concentration": 58.89
+      "activity_concentration": 58.89,
+      "person_achievements": [
+        [
+          "Ghost",
+          5
+        ],
+        [
+          "Hype person",
+          1
+        ],
+        [
+          "Conversation starter",
+          5
+        ]
+      ]
     },
     "Shreyas": {
       "total_messages": 97,
@@ -28,7 +198,21 @@
         "💀"
       ],
       "avg_response_time": 49.0,
-      "activity_concentration": 34.07
+      "activity_concentration": 34.07,
+      "person_achievements": [
+        [
+          "Ghost",
+          3
+        ],
+        [
+          "Hype person",
+          4
+        ],
+        [
+          "Conversation starter",
+          3
+        ]
+      ]
     },
     "Meka": {
       "total_messages": 76,
@@ -38,7 +222,21 @@
         "🥲"
       ],
       "avg_response_time": 44.5,
-      "activity_concentration": 36.96
+      "activity_concentration": 36.96,
+      "person_achievements": [
+        [
+          "Ghost",
+          2
+        ],
+        [
+          "Hype person",
+          3
+        ],
+        [
+          "Conversation starter",
+          1
+        ]
+      ]
     },
     "Utkarsh": {
       "total_messages": 255,
@@ -49,7 +247,21 @@
         "🥀"
       ],
       "avg_response_time": 30.5,
-      "activity_concentration": 92.29
+      "activity_concentration": 92.29,
+      "person_achievements": [
+        [
+          "Ghost",
+          4
+        ],
+        [
+          "Hype person",
+          2
+        ],
+        [
+          "Conversation starter",
+          4
+        ]
+      ]
     },
     "Madhu": {
       "total_messages": 31,
@@ -60,7 +272,21 @@
         "💀"
       ],
       "avg_response_time": 114.0,
-      "activity_concentration": 12.37
+      "activity_concentration": 12.37,
+      "person_achievements": [
+        [
+          "Ghost",
+          1
+        ],
+        [
+          "Hype person",
+          5
+        ],
+        [
+          "Conversation starter",
+          2
+        ]
+      ]
     }
   }
 }

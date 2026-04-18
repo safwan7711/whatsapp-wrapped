@@ -58,9 +58,9 @@ def night_owl(messages):
             else:
                 night_owlDict[sender] = 1
     if not night_owlDict:
-        return "No night owls found"
+        return []
     # finding max value by sorting first using lambda expresiion  
-    night_owl_guy =sorted(night_owlDict.items(), key = lambda x: x[1], reverse=True)[0][0]
+    night_owl_guy =sorted(night_owlDict.items(), key = lambda x: x[1], reverse=True)[:5]
     return night_owl_guy
 
 def ghost(messages):
@@ -77,7 +77,7 @@ def ghost(messages):
         person: reply_count.get(person, 0)  # calculate default to 0 if no replies
         for person in message_count
     }
-    ghost_guy= sorted(ghost_dict.items(), key = lambda x: x[1])[0][0]
+    ghost_guy= sorted(ghost_dict.items(), key = lambda x: x[1])[:5]
     return ghost_guy   
 
 def conversation_starters(messages,x,y,time_range):
@@ -120,8 +120,8 @@ def conversation_starters(messages,x,y,time_range):
         for i in range(len(freq_list)):
             convo_dict[sender] += (i*time_range)**x * freq_list[i]**y
 
-    convo_guy = sorted(convo_dict.items(), key = lambda x: x[1], reverse=True)[0][0]
-    return convo_guy
+    convo_guys = sorted(convo_dict.items(), key = lambda x: x[1], reverse=True)[:5]
+    return convo_guys
 
 def most_used_emojis(messages):
     #TODO: find top 3 emojis used y each person 
@@ -156,7 +156,7 @@ def most_used_emojis(messages):
         top__emoji_dict[sender] = [emoji for emoji,count in top_emojis]
     return top__emoji_dict
 
-def busiest_day(messages):
+def busiest_days(messages):
     mess_day_dict ={}
     for message in messages:
         day = message['datetime'].strftime("%d/%m/%Y") # in str format
@@ -164,9 +164,9 @@ def busiest_day(messages):
             mess_day_dict[day]+=1
         else:
             mess_day_dict[day]=1
-    busiest_day = sorted(mess_day_dict.items(), key = lambda x :(-x[1], datetime.strptime(x[0], "%d/%m/%Y")))[0][0]
+    busiest_days = sorted(mess_day_dict.items(), key = lambda x :(-x[1], datetime.strptime(x[0], "%d/%m/%Y")))[:5]
     # sorting by count in descending order and then by date in ascending order to get the earliest day in case of tie
-    return busiest_day
+    return busiest_days
 
 def longest_silence(messages):
     longest_gap =timedelta() # initialize longest gap to 0
@@ -212,11 +212,11 @@ def avg_response_time(messages):
         median_resp_time[sender]= median(time_lst)
     return median_resp_time
 
-def hype_person(messages):
+def hype_persons(messages):
     median_resp_time = avg_response_time(messages)
     # hype guy is the one with lowest median response time.
-    hype_guy = sorted(median_resp_time.items(), key = lambda x: x[1])[0][0]
-    return hype_guy
+    hype_guys = sorted(median_resp_time.items(), key = lambda x: x[1])[:5]
+    return hype_guys
 
 def activity_concentration(messages):
     # CUSTOM STAT
@@ -235,15 +235,35 @@ def activity_concentration(messages):
     conc_dict = {persons[i]: round(float(norms[i]), 2) for i in range(len(persons))}
     return conc_dict
 
+def person_achievements(messages):
+    pa={}
+    for person in set(msg['sender'] for msg in messages):
+        pa[person] = []
+        for i in range(min(5,len(night_owl(messages)))):
+            if night_owl(messages)[i][0] == person:
+                pa[person].append(("Night owl",i+1))
+        for i in range(min(5,len(ghost(messages)))):
+            if ghost(messages)[i][0] == person:
+                pa[person].append(("Ghost",i+1))
+        for i in range(min(5,len(hype_persons(messages)))):
+            if hype_persons(messages)[i][0] == person:
+                pa[person].append(("Hype person",i+1))
+        for i in range(min(5,len(conversation_starters(messages,1,2,2)))):
+            if conversation_starters(messages,1,2,2)[i][0] == person:
+                pa[person].append(("Conversation starter",i+1))
+    return pa
+    
+
 def json_format(messages):
     output = {
         "group": {
-            "busiest_day": busiest_day(messages),
+            "busiest_days": busiest_days(messages),
             "longest_silence": longest_silence(messages),
-            "night_owl": night_owl(messages),
-            "ghost": ghost(messages),
-            "hype_person": hype_person(messages),
-            "conversation_starters": conversation_starters(messages,1,2,4),# time range of 4 hours.
+            "night_owls": night_owl(messages),
+            "ghosts": ghost(messages),
+            "hype_persons": hype_persons(messages),
+            "conversation_starters": conversation_starters(messages,1,2,2),# time range of 2 hours.
+            "person_achievements": person_achievements(messages)
         },
         "persons": {}
     }
@@ -253,7 +273,8 @@ def json_format(messages):
             "total_words": total_words(messages).get(person, 0),
             "most_used_emojis": most_used_emojis(messages).get(person, []),
             "avg_response_time": avg_response_time(messages).get(person, 0),
-            "activity_concentration": activity_concentration(messages).get(person, 0)
+            "activity_concentration": activity_concentration(messages).get(person, 0),
+            "person_achievements": person_achievements(messages).get(person, [])
         }
     return output
  
