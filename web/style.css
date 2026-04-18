@@ -1,90 +1,46 @@
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #121212;
-    color: #FFFFFF;
-    margin: 0;
-    padding: 2rem 1rem;
-    display: flex;
-    justify-content: center;
+    font-family: "Times New Roman", Times, serif;
+    user-select: none;/* text selection not allowed */
 }
 
-main {
-    background-color: #0a0a0a;
+#landing {
+    background: linear-gradient(135deg, #64ff41, #ae5748);
+}
+
+.busy-day {
+    background: linear-gradient(135deg, #8E2DE2, #4A00E0) !important;
+}
+
+.progress-bar-wrapper {
+    flex-grow: 1;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background-color: white;
+    transition: width 0.2s linear;
+}
+
+.progress-bar-fill.done {
     width: 100%;
-    max-width: 500px;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    padding: 2rem;
-    border-top: 8px solid #A4A6DC;
-    position: relative;
-    overflow: hidden;
 }
 
-h1 {
-    text-align: center;
-    color: #A4A6DC;
-    margin-top: 0;
-    margin-bottom: 3.5rem;
-    font-size: 1.8rem;
-    position: relative;
-    z-index: 1;
+.slide-anim {
+    animation: slideUp 0.5s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
 }
 
-h1::before {
-    content: "message";
-    font-size: 7.5rem;
-    font-weight: 900;
-    color: rgba(164, 166, 220, 0.04);
-    position: absolute;
-    top: -2.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: -1;
-    pointer-events: none;
-    letter-spacing: -5px;
-}
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
 
-main::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 7rem;
-    background-image: linear-gradient(90deg,
-            transparent 50%,
-            rgba(255, 255, 255, 0.03) 50%);
-    background-size: 15px;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0.6;
-}
-
-main>table {
-    position: relative;
-    z-index: 2;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-tr {
-    border-bottom: 1px solid #1a1a1a;
-}
-
-tr:last-child {
-    border-bottom: none;
-}
-
-td {
-    padding: 1.1rem 0.5rem;
-    vertical-align: middle;
-}
-
-td:nth-child(1) {
-    width: 40px;
-    text-align: center;
-    font-size: 1.5rem;
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
