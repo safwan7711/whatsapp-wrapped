@@ -10,21 +10,194 @@ document.addEventListener("DOMContentLoaded", async () => {
   slides = []; //Stores html content of each slide
   background_classes = []; // This stores the class for each slide
   function build_group_slides() {
-    // Busy Day Slide
-    slides.push(`
-            <h2 class="fw-bold mb-4">You guys couldn't stay quiet</h2>
-            <h1 class="huge-text mb-4">${data.group.busiest_days[0][0]}</h1>
-            <p class="lead">was your absolute busiest day(genuinely time to touch some grass)</p>
-        `);
+    // 1.Busy Day Slide
+    let html = `
+     <p class="title-text">BUSIEST DAYS</p>
+     <p class="subtitle-text">y'all really couldn't put the phone down 📱</p>
+     <table class="busy-table">
+     <thead>
+       <tr>
+         <th>Rank</th>
+         <th class="text-start">Date</th>
+         <th class="text-end">Count</th>
+        </tr>
+      </thead>
+      <tbody>`;
+
+    const days = data.group.busiest_days;
+
+    for (let i = 0; i < days.length; i++) {
+      const date = days[i][0];
+      const count = days[i][1];
+
+      let rowClass = "";
+      if (i === 0) rowClass = "first";
+      else if (i === 1) rowClass = "second";
+      emoji_list = ["🥇", "🥈", "🥉", "4", "5"];
+
+      html += `
+    <tr class="${rowClass}">
+      <td class="rank">${emoji_list[i]}</td>
+      <td class="date">${date}</td>
+      <td class="count">${count}</td>
+    </tr>`;
+    }
+
+    html += `
+      </tbody>
+    </table>`;
+
+    slides.push(html);
     background_classes.push("busy-day");
-    slides.push(`
-            <h1 class="fw-bold mb-4">Sample Slide</h1>
-        `);
-    background_classes.push("busy-day");
-    slides.push(`
-            <h1 class="fw-bold mb-4">Another Sample Slide</h1>
-        `);
-    background_classes.push("busy-day");
+    // 2. Ghost Slide
+
+    let html2 = `
+    <p class="title-text">GHOSTS</p>
+    <p class="subtitle-text">who got left on read the most 👻</p>
+    <table class="busy-table ghost-table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th class="text-start">Name</th>
+         <th class="text-end">Ghosting value</th>
+       </tr>
+     </thead>
+     <tbody>`;
+
+    const ghosts = data.group.ghosts;
+
+    for (let i = 0; i < ghosts.length; i++) {
+      const name = ghosts[i][0];
+      const count = ghosts[i][1];
+      let rowClass = "";
+      if (i === 0) rowClass = "first";
+      else if (i === 1) rowClass = "second";
+      emoji_list = ["👻", "2", "3", "4", "5"];
+
+      html2 += `
+     <tr class="${rowClass}">
+       <td class="rank">${emoji_list[i]}</td>
+       <td class="date">${name}</td>
+       <td class="count">${count}</td>
+     </tr>`;
+    }
+
+    html2 += `
+       </tbody>
+     </table>`;
+
+    slides.push(html2);
+    background_classes.push("ghost");
+    // 3. Hypeness Slide
+    let html3 = `
+    <p class="title-text">HYPEST PERSONS</p>
+    <p class="subtitle-text">always first to reply, no life confirmed ⚡</p>
+    <table class="busy-table hype-table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th class="text-start">Name</th>
+        <th class="text-end">Time to respond(min)</th>
+       </tr>
+     </thead>
+     <tbody>`;
+
+    const hypeness = data.group.hype_persons;
+    for (let i = 0; i < hypeness.length; i++) {
+      const name = hypeness[i][0];
+      const count = hypeness[i][1];
+      let rowClass = "";
+      if (i === 0) rowClass = "first";
+      else if (i === 1) rowClass = "second";
+      emoji_list = ["🔥", "2", "3", "4", "5"];
+
+      html3 += `
+     <tr class="${rowClass}">
+       <td class="rank">${emoji_list[i]}</td>
+       <td class="date">${name}</td>
+       <td class="count">${count}</td>
+     </tr>`;
+    }
+
+    html3 += `
+       </tbody>
+     </table>`;
+
+    slides.push(html3);
+    background_classes.push("hype");
+    // 4. Night Owl Slide
+    let html4 = `
+    <p class="title-text">NIGHT OWLS</p>
+    <p class="subtitle-text">who was texting at 3am 🌙</p>
+    <table class="busy-table owl-table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th class="text-start">Name</th>
+        <th class="text-end">Night activity value</th>
+       </tr>
+     </thead>
+     <tbody>`;
+
+    const night_owls = data.group.night_owls;
+    for (let i = 0; i < night_owls.length; i++) {
+      const name = night_owls[i][0];
+      const count = night_owls[i][1];
+      let rowClass = "";
+      if (i === 0) rowClass = "first";
+      else if (i === 1) rowClass = "second";
+      emoji_list = ["🦉", "2", "3", "4", "5"];
+
+      html4 += `
+     <tr class="${rowClass}">
+       <td class="rank">${emoji_list[i]}</td>
+       <td class="date">${name}</td>
+       <td class="count">${count}</td>
+     </tr>`;
+    }
+
+    html4 += `
+       </tbody>
+     </table>`;
+
+    slides.push(html4);
+    background_classes.push("owl");
+    // 5. Conversation Starter Slide
+    let html5 = `
+    <p class="title-text">CONVERSATION STARTERS</p>
+    <p class="subtitle-text">who saved the dead chat every time 🔥</p>
+    <table class="busy-table convo-table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th class="text-start">Name</th>
+        <th class="text-end">Convo value</th>
+       </tr>
+     </thead>
+     <tbody>`;
+    const convo_starters = data.group.conversation_starters;
+    for (let i = 0; i < convo_starters.length; i++) {
+      const name = convo_starters[i][0];
+      const count = convo_starters[i][1];
+      let rowClass = "";
+      if (i === 0) rowClass = "first";
+      else if (i === 1) rowClass = "second";
+      emoji_list = ["💬", "2", "3", "4", "5"];
+
+      html5 += `
+      <tr class="${rowClass}">
+        <td class="rank">${emoji_list[i]}</td>
+        <td class="date">${name}</td>
+        <td class="count">${count}</td>
+      </tr>`;
+    }
+
+    html5 += `
+       </tbody>
+     </table>`;
+
+    slides.push(html5);
+    background_classes.push("convo");
   }
   function render_progress() {
     progress_bar.innerHTML = slides
@@ -47,7 +220,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     slide.innerHTML = slides[index];
     slide_screen.className = `screen d-flex flex-column w-100 h-100 position-absolute top-0 start-0 z-2 ${background_classes[index % background_classes.length]}`;
-
     // Update the progress bar
     slides.forEach((_, i) => {
       bar = document.getElementById(`progress-${i}`);

@@ -1,27 +1,101 @@
 body {
     font-family: "Times New Roman", Times, serif;
-    user-select: none;/* text selection not allowed */
+    user-select: none;
+    /* Prevents text selection while tapping */
 }
 
+/* Landing Gradient */
 #landing {
     background: linear-gradient(135deg, #64ff41, #ae5748);
 }
 
-.busy-day {
-    background: linear-gradient(135deg, #8E2DE2, #4A00E0) !important;
+/* Slide Background Gradients (!important ensures bootstrap doesn't override them) */
+.busy-day  { background: linear-gradient(135deg, #8E2DE2, #4A00E0) !important; }
+.ghost { background: linear-gradient(135deg, #141414, #2c2c54) !important; }
+.hype  { background: linear-gradient(135deg, #fc4a1a, #f7b733) !important; color: #000 !important; }
+.owl  { background: linear-gradient(135deg, #0f0c29, #302b63) !important; }
+.convo { background: linear-gradient(135deg, #11998e, #38ef7d) !important; color: #000 !important; }
+
+.title-text {
+  margin-bottom: 4px;
+  font: 800 30px/1 "Times New Roman", serif;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.subtitle-text {
+  margin-bottom: 16px;
+  font-size: 15px;
+  opacity: 0.6;
+  letter-spacing: 1px;
+  font-style: italic;
+}
+
+.busy-table {
+  width: min(860px, 92%);
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+.busy-table th,
+.busy-table td {
+  padding: 12px 16px;
+}
+
+.busy-table th {
+  background: rgba(138, 127, 127, 0.18);
+  font-size: 20px;
+}
+
+/* Default row color (slides 3,4,5 override below) */
+.busy-table td { background: rgba(135, 70, 6, 0.9); }
+.ghost-table td { background: rgba(60, 60, 100, 0.85); }
+.hype-table  td { background: rgba(180, 60, 10, 0.85); }
+.owl-table   td { background: rgba(30, 20, 80, 0.85); }
+.convo-table td { background: rgba(10, 100, 80, 0.85); color: white; }
+
+.busy-table .rank { width: 88px; }
+.busy-table .count { width: 100px; text-align: right; }
+.busy-table .date { text-align: left; }
+
+.busy-table td:first-child { border-radius: 16px 0 0 16px; }
+.busy-table td:last-child  { border-radius: 0 16px 16px 0; }
+
+.busy-table tbody td {
+  font-size: 21px;
+  font-weight: 700;
+  padding: 12px 8px;
+}
+
+/* First row: gold — same for all slides */
+.busy-table tr.first td {
+  font-size: 40px;
+  background: rgba(255, 217, 0, 0.83);
+  color: #000;
+  padding: 40px 30px;
+}
+
+/* Second row: silver — same for all slides */
+.busy-table tr.second td {
+  font-size: 27px;
+  background: rgb(105, 105, 105);
+  color: #fff;
+  padding: 26px 20px;
 }
 
 .progress-bar-wrapper {
     flex-grow: 1;
     height: 4px;
     background-color: rgba(255, 255, 255, 0.3);
+    /* Slightly brighter wrapper */
     border-radius: 2px;
 }
 
 .progress-bar-fill {
     height: 100%;
     width: 0%;
-    background-color: white;
+    background-color: #ffffff;
+    /* FIX: Was #070606 (Black), now White */
     transition: width 0.2s linear;
 }
 
@@ -29,8 +103,9 @@ body {
     width: 100%;
 }
 
+/* Missing Slide Animation added! */
 .slide-anim {
-    animation: slideUp 0.5s cubic-bezier(0.25, 0.45, 0.45, 0.95) both;
+    animation: slideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 @keyframes slideUp {
