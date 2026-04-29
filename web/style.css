@@ -101,144 +101,143 @@ body {
   font-size: 21px;
   font-weight: 700;
   padding: 12px 8px;
+}
+.stats-table tr.first td {
+  font-size: 34px;
+  /* Decreased from 40px */
+  background: rgba(255, 217, 0, 0.83);
+  color: #000;
+  padding: 24px 20px;
+}
 
+.stats-table tr.second td {
+  font-size: 27px;
+  background: rgb(105, 105, 105);
+  color: #fff;
+  padding: 18px 14px;
+}
+
+/* Third row: bronze — made slightly bigger than default rows */
+.stats-table tr.third td {
+  font-size: 24px;
+  /* Increased from the default 21px */
+  background: rgba(205, 127, 50, 0.85);
+  /* Bronze background to match the theme */
+  color: #fff;
+  padding: 16px 12px;
+  /* Slightly more padding than default */
+}
+
+.progress-bar-wrapper {
+  flex-grow: 1;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  /* Slightly brighter wrapper */
+  border-radius: 2px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background-color: #ffffff;
+  /* FIX: Was #070606 (Black), now White */
+  transition: width 0.2s linear;
+}
+
+.progress-bar-fill.done {
+  width: 100%;
+}
+
+/* Missing Slide Animation added! */
+.slide-anim {
+  animation: slideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scrollable container for complex slides */
+.slide-container {
+  max-width: 1200px;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 20px;
+}
+
+/* Hide scrollbar for a cleaner presentation UI */
+.slide-container::-webkit-scrollbar {
+  display: none;
+}
+
+.slide-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Make tables take full width of their flex containers */
+.stats-table.w-100 {
+  width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .title-text {
+    font-size: 24px;
+    letter-spacing: 2px;
+  }
+
+  .subtitle-text {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  /* Shrink the core table padding */
+  .stats-table th,
+  .stats-table td {
+    padding: 8px 10px;
+  }
+
+  /* Shrink default text size */
+  .stats-table th {
+    font-size: 15px;
+  }
+
+  .stats-table tbody td {
+    font-size: 16px;
+    padding: 8px 6px;
+  }
+
+  /* Adjust the massive First/Second Place Rows */
   .stats-table tr.first td {
-    font-size: 34px;
-    /* Decreased from 40px */
-    background: rgba(255, 217, 0, 0.83);
-    color: #000;
-    padding: 24px 20px;
+    font-size: 20px;
+    padding: 14px 10px;
   }
 
   .stats-table tr.second td {
-    font-size: 27px;
-    background: rgb(105, 105, 105);
-    color: #fff;
-    padding: 18px 14px;
+    font-size: 18px;
+    padding: 12px 10px;
   }
 
-  /* Third row: bronze — made slightly bigger than default rows */
   .stats-table tr.third td {
-    font-size: 24px;
-    /* Increased from the default 21px */
-    background: rgba(205, 127, 50, 0.85);
-    /* Bronze background to match the theme */
-    color: #fff;
-    padding: 16px 12px;
-    /* Slightly more padding than default */
+    font-size: 16px;
+    padding: 10px 8px;
   }
 
-  .progress-bar-wrapper {
-    flex-grow: 1;
-    height: 4px;
-    background-color: rgba(255, 255, 255, 0.3);
-    /* Slightly brighter wrapper */
-    border-radius: 2px;
+  /* Adjust column widths to give name/date more space */
+  .stats-table .rank {
+    width: 45px;
   }
 
-  .progress-bar-fill {
-    height: 100%;
-    width: 0%;
-    background-color: #ffffff;
-    /* FIX: Was #070606 (Black), now White */
-    transition: width 0.2s linear;
-  }
-
-  .progress-bar-fill.done {
-    width: 100%;
-  }
-
-  /* Missing Slide Animation added! */
-  .slide-anim {
-    animation: slideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  }
-
-  @keyframes slideUp {
-    0% {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Scrollable container for complex slides */
-  .slide-container {
-    max-width: 1200px;
-    max-height: 80vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-bottom: 20px;
-  }
-
-  /* Hide scrollbar for a cleaner presentation UI */
-  .slide-container::-webkit-scrollbar {
-    display: none;
-  }
-
-  .slide-container {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  /* Make tables take full width of their flex containers */
-  .stats-table.w-100 {
-    width: 100% !important;
-  }
-
-  @media (max-width: 768px) {
-    .title-text {
-      font-size: 24px;
-      letter-spacing: 2px;
-    }
-
-    .subtitle-text {
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-
-    /* Shrink the core table padding */
-    .stats-table th,
-    .stats-table td {
-      padding: 8px 10px;
-    }
-
-    /* Shrink default text size */
-    .stats-table th {
-      font-size: 15px;
-    }
-
-    .stats-table tbody td {
-      font-size: 16px;
-      padding: 8px 6px;
-    }
-
-    /* Adjust the massive First/Second Place Rows */
-    .stats-table tr.first td {
-      font-size: 20px;
-      padding: 14px 10px;
-    }
-
-    .stats-table tr.second td {
-      font-size: 18px;
-      padding: 12px 10px;
-    }
-
-    .stats-table tr.third td {
-      font-size: 16px;
-      padding: 10px 8px;
-    }
-
-    /* Adjust column widths to give name/date more space */
-    .stats-table .rank {
-      width: 45px;
-    }
-
-    .stats-table .count {
-      width: 70px;
-    }
+  .stats-table .count {
+    width: 70px;
   }
 }
