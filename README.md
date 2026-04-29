@@ -8,7 +8,7 @@ To generate the chat run python3 chat.py [PATH] [DURATION] and the output `chat.
 
 ### Analyser
 
-To generate the `data.json` file run python3 analyze.py and the file will be generated in the project directory.
+To generate the `data.json` file run python3 analyze.py [PATH] and the file will be generated in the project directory.
 
 ### Website
 
