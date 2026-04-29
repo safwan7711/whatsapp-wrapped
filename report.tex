@@ -1,0 +1,402 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\title{WhatsApp Wrapped System\
+CS108 Project Report}
+\author{Tamizhinian S. and Muhammed Safwan R}
+\date{April 29, 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+
+This project implements a WhatsApp Wrapped system that simulates group chat conversations, analyzes user behavior, and presents the results as an interactive slideshow.
+
+The system is divided into three main parts: chat generation, statistical analysis, and frontend visualization. The goal is to model realistic conversation patterns and extract meaningful insights such as activity trends, response behavior, and user engagement.
+
+
+\section{Project Structure}
+
+The system follows a pipeline-based architecture:
+
+\begin{math}
+vocabulary.txt \rightarrow chat.py \rightarrow chat.txt \rightarrow analyze.py \rightarrow data.json \rightarrow app.js
+\end{math}
+
+\subsection{Components}
+
+\begin{itemize}
+\item \textbf{generator/chat.py}: Generates WhatsApp-style chat data.
+\item \textbf{generator/personality.json}: Define personality traits for \texttt{chat.py}
+\item \textbf{chat.txt}: Stores generated conversations.
+\item \textbf{parser/analyze.py}: Parses chat data and computes statistics.
+\item \textbf{data.json}: Computed results in a json file.
+\item \textbf{web/app.js}:
+\item \textbf{web/index.html}:
+\item \textbf{web/style.css}:
+\end{itemize}
+
+\section{Chat Generation Design}
+
+\subsection{Personality Configuration}
+
+Instead of hardcoding personalities, we used an external configuration(json) file.
+
+\texttt{personality.json:}
+
+Each user is defined using the following attributes:
+
+\begin{itemize}
+\item \textbf{Name}: Identifier of the user
+\item \textbf{Active Hours}: Time intervals when the user is likely to send messages
+\item \textbf{Yapperness}: Probability of sending messages (higher means more talkative)
+\item \textbf{Average Message Length}: Controls the number of words in a message
+\item \textbf{Ghoster}: Probability of sending multiple messages consecutively
+\end{itemize}
+
+Example:
+
+\begin{verbatim}
+{
+"Name": "Nishit",
+"Active Hours": [[9,12], [18,23]],
+"Yapperness": 0.7,
+"Average Message Length": 8,
+"Ghoster": 0.6
+}
+\end{verbatim}
+
+\subsection{Message Generation}
+
+idk yap smtg
+
+\section{Parser and Statistics anlaysis}
+
+The parser \texttt{analyze.py} reads the chat line-by-line and extracts structured information using regular expressions using re library. See library section \cite{python}
+
+\subsection{Parser}
+
+Each message is parsed into:
+\begin{itemize}
+\item Timestamp
+\item Sender
+\item Tag 
+\item Message text
+\end{itemize}
+
+Regex used in our code was:
+\begin{verbatim}
+^\[(\d{2}/\d{2}/\d{4}), (\d{2}:\d{2}:\d{2})\] ([^\[]+) \[(?:REPLY TO\]([^:]+)
+|INDEPENDENT\]):\s*(.*)$
+\end{verbatim}
+
+\subsection{Statistical Definitions}
+
+Each message in the chat has a timestamp $t$, a sender $s$, and message content. The following definitions describe how each statistic is computed.
+
+\subsubsection{Total Messages}
+
+For each user $u$, we count the number of messages they send:
+
+\subsubsection{Total Words}
+
+For each message, we count the number of words and sum them for each user:
+
+
+\subsubsection{Night Owl}
+
+We define night-time as messages sent between 12 AM and 4 AM.
+
+$NightCount(u) = \text{number of messages sent by } u \text{ between 0 and 4 hours}$
+
+\subsubsection{Ghost}
+
+A ghost is a user whose messages receive the least replies.
+
+$Replies(u) = \text{number of times messages of } u \text{ are replied to}$
+
+$Ghost = \text{user with minimum } Replies(u)$
+
+\subsubsection{Conversation Starter}
+
+We define the conversation starter using a scoring function instead of a fixed threshold.
+
+Let two consecutive messages have timestamps $t_{i-1}$ and $t_i$. The time gap is:
+
+$Gap_i = {t_i - t_{i-1}}$
+
+We introduce a parameter $T$ (called \textit{time\_range}) which represents the minimum gap unit in hours (in our implementation $T = 2$).
+
+We convert the gap into discrete levels:
+
+$n = \left\lfloor \frac{Gap_i}{T} \right\rfloor$
+
+If $n = 0$, the gap is too small and is ignored. If $n \geq 1$, the message is considered as starting a new conversation after a gap of approximately $nT$ hours.
+
+For each user $u$, we maintain a frequency count:
+
+$freq_u[n] = \text{number of times user } u \text{ sends a message after a gap of level } n$
+
+We then define a score for each user:
+
+$Score(u) = \sum_{n \geq 1} (n \cdot T)^x \cdot (freq_u[n])^y$
+
+where:
+\begin{itemize}
+\item $x$ controls how much importance is given to larger time gaps
+\item $y$ controls how much importance is given to repeated conversation starts
+\end{itemize}
+
+In our implementation, we use $x = 1$ and $y = 2$, so the score becomes:
+
+$Score(u) = \sum_{n \geq 1} (n \cdot T) \cdot (freq_u[n])^2$
+
+The conversation starter is defined as:
+
+$ConversationStarter = \text{user with maximum } Score(u)$
+
+\textbf{Interpretation:}
+\begin{itemize}
+\item Larger gaps (higher $n$) contribute more to the score
+\item Users who repeatedly restart conversations are rewarded more (due to squaring)
+\item Small gaps are ignored automatically since $n = 0$
+\end{itemize}
+
+This formulation directly matches the implementation, where gaps are bucketed into levels and weighted using both gap size and frequency.
+
+\subsubsection{Busiest Day}
+
+We count messages for each date:
+
+$DayCount(d) = \text{number of messages on day } d$
+
+$BusiestDays = \text{top5 day with maximum } DayCount(d)$
+
+\subsubsection{Longest Silence}
+
+We compute gaps between consecutive messages:
+
+$Gap = t_i - t_{i-1}$
+
+$LongestSilence = \max(\text{all such gaps})$
+
+\subsubsection{Most Used Emoji}
+
+We extract emojis from messages and count frequency:
+
+$EmojiCount(e) = \text{number of times emoji } e \text{ appears}$
+
+Top 3 emojis are selected for each user.
+
+\subsubsection{Average Response Time}
+
+For each message, we find the next message sent by a different user:
+
+$ResponseTime = t_{next} - t_{current}$
+
+We ignore gaps greater than 3 hours, as it it might not be a reply
+
+For each user:
+
+$AvgResponse(u) = \text{median of all response times}$
+
+\subsubsection{Hype Person}
+
+The hype person is the fastest responder:
+
+$HypePerson = \text{user with minimum } AvgResponse(u)$
+
+\subsubsection{Activity Concentration (Custom Statistic)}
+
+We define a custom statistic called \textbf{Activity Concentration} to measure how concentrated a user's messaging activity is across different hours of the day.
+
+Let there be $p$ users in the chat. We construct an \textbf{activity matrix}:
+
+$A \in R^{p \times 24}$
+
+where each row corresponds to a user and each column corresponds to an hour of the day (from 0 to 23).
+
+Each entry is defined as:
+
+$A[u, h] = \text{number of messages sent by user } {\bf {u}} \text{ during hour } \bf h$
+
+Thus, for each user $u$, we obtain a 24-dimensional activity vector:
+
+$A_u = [a_0, a_1, a_2, \ldots, a_{23}]$
+
+where $a_h$ is the number of messages sent in hour $h$.
+
+To quantify how concentrated this activity is, we compute the \textbf{Euclidean norm} (L2 norm) of this vector:
+
+$C(u) = \sqrt{a_0^2 + a_1^2 + a_2^2 + \cdots + a*{23}^2}$
+
+In our implementation, this is computed efficiently using NumPy:
+
+\begin{verbatim}
+norms = np.linalg.norm(activity, axis=1)
+\end{verbatim}
+
+where each row of the matrix \texttt{activity} corresponds to a user's hourly activity vector.
+
+\textbf{Interpretation:}
+
+\begin{itemize}
+\item If a user's messages are concentrated in a few hours, some entries of $A_u$ are large, leading to a higher norm $C(u)$.
+\item If a user's messages are spread evenly across many hours, the entries are more uniform, resulting in a lower norm.
+\end{itemize}
+
+\textbf{Example:}
+
+\begin{itemize}
+\item User A: $[0,0,0,10,0,\ldots]$ → high concentration → high norm
+\item User B: $[2,2,2,2,2,\ldots]$ → spread activity → lower norm
+\end{itemize}
+
+Thus, Activity Concentration captures whether a user is active only during specific time windows or throughout the day, which cannot be inferred from total message count alone.
+
+\textbf {Reason why we Choose this:} I wanted to use the linalg.norm function as it was the time when I did the python last activity. So this how I arrived at this function
+
+\section{Frontend Design}
+
+The frontend is implemented as a full-screen slideshow using HTML, CSS, and JavaScript, with Bootstrap used for layout and responsiveness.
+
+\subsection{Structure}
+
+The interface consists of two main sections:
+\begin{itemize}
+\item \texttt{#landing}: Displays the title and start button
+\item \texttt{#slideshow}: Displays statistics as slides
+\end{itemize}
+
+Initially, only the landing screen is visible. On clicking the start button, the slideshow is activated by toggling visibility using CSS classes. 
+
+\subsection{Slideshow Mechanism}
+
+All slides are dynamically rendered inside the \texttt{#stats} container using JavaScript. Each slide replaces the previous content, creating a step-by-step presentation of statistics.
+
+A progress bar at the top visually indicates the current slide position.
+
+\subsection{Data Integration}
+
+The frontend reads data from \texttt{data.json}, which contains:
+\begin{itemize}
+\item group-level statistics
+\item per-user statistics
+\end{itemize}
+
+JavaScript processes this data and generates slide content accordingly.
+
+\subsection{Styling and Visualization}
+
+Slides are styled using CSS with gradient backgrounds (e.g., \texttt{.ghost}, \texttt{.hype}, \texttt{.owl}) to differentiate statistics. 
+
+Rank-based tables are used to display top users, with visual emphasis on higher ranks.
+
+\subsection{Animation and Responsiveness}
+
+Slides use a smooth ``slide-up'' animation for transitions. The layout is responsive using Bootstrap and media queries, ensuring proper display on different screen sizes.
+
+\subsection{Chart.js Integration}
+
+In addition to tabular displays, we used \textbf{Chart.js} to visualize certain statistics such as message counts and word counts.
+
+The data from \texttt{data.json} is converted into arrays of labels (user names or dates) and corresponding values (counts). These are then passed to Chart.js to render charts dynamically.
+
+A typical chart configuration used is:
+
+\begin{verbatim}
+new Chart(ctx, {
+type: 'bar',
+data: {
+labels: [...],
+datasets: [{
+label: 'Messages',
+data: [...]
+}]
+}
+});
+\end{verbatim}
+
+\section{Libraries Used}
+
+\subsection{Python Standard Library}
+
+The following standard libraries were used: \cite{python}
+
+\begin{itemize}
+\item \texttt{re} — for regex-based parsing of chat messages and emoji extraction
+\item \texttt{datetime} — for handling timestamps and computing time gaps
+\item \texttt{json} — for writing structured output to \texttt{data.json}
+\item \texttt{sys} — for handling command-line arguments
+\end{itemize}
+
+\subsection{External Python Libraries}
+
+\begin{itemize}
+\item \texttt{numpy} — used for numerical computations, specifically for computing the activity concentration using vector norms \cite{numpy}
+\end{itemize}
+
+\subsection{Frontend Libraries}
+
+\begin{itemize}
+\item \textbf{Bootstrap 5} — used for responsive layout and UI components \cite{bootstrap}
+\item \textbf{Chart.js} — used for visualizing statistics such as message counts \cite{chartjs}
+\end{itemize}
+
+
+
+\section{Hurdles Faced}
+
+\begin{itemize}
+\item It was difficult for us to design, like coming up with colours, all those styling part took time.
+\item Defining ambiguous statistics and making decisions about thresholds
+\item Handling time-based calculations correctly
+\end{itemize}
+
+\section{Future Improvements}
+
+If given additional time:
+
+\begin{itemize}
+\item Add advanced visualizations (graphs)
+\item Improve natural language generation
+\item Add real-time interaction in frontend
+\item Include sentiment analysis
+\end{itemize}
+
+\section{Conclusion}
+
+The project successfully demonstrates the integration of data generation, analysis, and visualization. It highlights how behavioral patterns can be extracted from conversational data and presented in an engaging format.
+
+\section{Bibliography}
+
+\begin{thebibliography}{9}
+
+\bibitem{python}
+Python Standard Library Documentation.
+\url{https://docs.python.org/3/library/}
+
+\bibitem{numpy}
+NumPy Documentation.
+\url{https://numpy.org/doc/}
+
+\bibitem{bootstrap}
+Bootstrap Documentation.
+\url{https://getbootstrap.com/docs/5.3/}
+
+\bibitem{chartjs}
+Chart.js Documentation.
+\url{https://www.chartjs.org/docs/}
+
+
+\end{thebibliography}
+
+
+\end{document}

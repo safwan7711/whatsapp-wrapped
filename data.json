@@ -91,6 +91,34 @@
       ]
     ],
     "person_achievements": {
+      "Meka": [
+        [
+          "Ghost",
+          2
+        ],
+        [
+          "Hype person",
+          3
+        ],
+        [
+          "Conversation starter",
+          1
+        ]
+      ],
+      "Utkarsh": [
+        [
+          "Ghost",
+          4
+        ],
+        [
+          "Hype person",
+          2
+        ],
+        [
+          "Conversation starter",
+          4
+        ]
+      ],
       "Shreyas": [
         [
           "Ghost",
@@ -117,34 +145,6 @@
         [
           "Conversation starter",
           5
-        ]
-      ],
-      "Utkarsh": [
-        [
-          "Ghost",
-          4
-        ],
-        [
-          "Hype person",
-          2
-        ],
-        [
-          "Conversation starter",
-          4
-        ]
-      ],
-      "Meka": [
-        [
-          "Ghost",
-          2
-        ],
-        [
-          "Hype person",
-          3
-        ],
-        [
-          "Conversation starter",
-          1
         ]
       ],
       "Madhu": [

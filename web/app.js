@@ -214,7 +214,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     slides.push(html5);
     background_classes.push("convo");
+
+    // 7. Person Selector Slide — clicking a name jumps to their profile
+    const persons = Object.keys(data.persons); 
+    const person_slide_start = slides.length + 1; 
+    let selector_html = `
+      <p class="title-text">PERSONAL WRAPS</p>
+      <p class="subtitle-text">tap a name to jump to their stats 👇</p>
+      <div class="person-selector">
+        ${persons.map((name, i) => `
+          <button class="person-btn" onclick="goto_person(${person_slide_start + i})">${name}</button>
+        `).join('')}
+      </div>
+    `;
+    slides.push(selector_html);
+    background_classes.push("owl");
   }
+
+  window.goto_person = function(target_index) {
+    index = target_index;
+    render_slide(index);
+  };
 
   function build_person_slides() {
     let t_idx = 0;
@@ -339,7 +359,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   slide_screen.addEventListener("click", (e) => {
-    if (e.target.closest("table")) return; // makes sure it doesnt skip slides on mobile
+    if (e.target.closest("table")) return;
+    if (e.target.closest(".person-btn")) return; // don't advance when clicking person buttons
 
     const xpos = e.clientX;
     const swidth = window.innerWidth;
