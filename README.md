@@ -1,7 +1,28 @@
 # whatsapp-wrapped
+
 ## Usage
 
-To generate the chat run python3 generator/chat.py and the output chat.txt file will be generated in project directory.
+### Generator
+
+To generate the chat run python3 chat.py [PATH] [DURATION] and the output `chat.txt` file will be generated in project directory.
+
+### Analyser
+
+To generate the `data.json` file run python3 analyze.py and the file will be generated in the project directory.
+
+### Website
+
+To start the website run a http server from the project directory, i.e python3 -m http.server [PORT] and navigate to web to open the website.
+
+To start the slide show click on the `Start the Show` button
+
+To move to the next slide click on the right 70% of the screen, clicking elsewhere will go back to the previous slide.
+
+After the group slides get over there is a slide which allows users to jump into any user's stats.
+
+After the personal slides are over, click on the dropdown to select users whose stats will be compared on the comparison slide.
+
+## Structure of `data.json`
 
 ## Design/Implementation Overview
 
