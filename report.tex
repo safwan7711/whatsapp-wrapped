@@ -75,8 +75,19 @@ Example:
 
 \subsection{Message Generation}
 
-idk yap smtg
 
+The generator generates the chat probabilistically based on the user profiles. The core message simulation follows these key steps:
+
+\begin{itemize}
+    \item \textbf{Text Generation}: The content of each message is constructed via the \texttt{gen\_message} function, which builds a text string by randomly sampling words from an external \texttt{vocabulary.txt} file using \texttt{numpy.random.choice}. The number of words selected for each message is dictated by the length parameter passed to the function.
+    \item \textbf{Conversation Tagging}: The system contextualizes messages by appending specific tags. Messages are tagged either as \texttt{[REPLY TO]} to simulate an ongoing conversation with a previous sender, or as \texttt{[INDEPENDENT]} to simulate a brand-new thought.
+    \item \textbf{Temporal Progression}: Time intervals between messages are dynamically modeled using Python's \texttt{datetime} module to reflect natural texting patterns. If a message is a reply during an active conversation, the timestamp advances rapidly by a random interval of 1 to 3 minutes. Conversely, if the message is an independent thought, the progression is slower, advancing by 5 to 10 minutes.
+    \item \textbf{Exporting Logs}: The generated messages, along with their assigned timestamps, sender names, and interaction tags, are appended to an internal log array. They are subsequently exported line-by-line to \texttt{chat.txt}.
+\end{itemize}
+
+\vspace{1em}
+\noindent\textbf{Note on variance from format for \textbf{chat.txt}:} \\
+It is important to note a deliberate deviation from the standard chat generation pattern with the introduction of a probabilistic reply system. The likelihood of a user replying directly to another is dependent on the \texttt{Yapperness} trait of both parties involved, modeled with a mean probability of $0.81 \times (\text{Yapperness}_A \times \text{Yapperness}_B)$. This approach introduces realistic conversational variance through natural reply chains. Furthermore, while it adds a layer of structural abstraction to the generator, explicitly tagging replies significantly simplifies the downstream analytical logic required to calculate response-based metrics, such as identifying the fastest replier.
 \section{Parser and Statistics anlaysis}
 
 The parser \texttt{analyze.py} reads the chat line-by-line and extracts structured information using regular expressions using re library. See library section \cite{python}
@@ -355,7 +366,7 @@ The following standard libraries were used: \cite{python}
 \section{Hurdles Faced}
 
 \begin{itemize}
-\item It was difficult for us to design, like coming up with colours, all those styling part took time.
+\item It was difficult for us to design the website, like coming up with colours, all those styling part took time.
 \item Defining ambiguous statistics and making decisions about thresholds
 \item Handling time-based calculations correctly
 \end{itemize}
