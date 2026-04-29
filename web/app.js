@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   slides = []; //Stores html content of each slide
   background_classes = []; // This stores the class for each slide
   themes = [
-    // Imma use these themes for person slides too
     { bg: "busy-day", tb: "" },
     { bg: "ghost", tb: "ghost-table" },
     { bg: "hype", tb: "hype-table" },
@@ -18,6 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     { bg: "convo", tb: "convo-table" },
   ];
 
+  // --- Global listener for the comparison dropdowns ---
   document.addEventListener("change", (e) => {
     if (e.target.classList.contains("person-select")) {
       const selects = document.querySelectorAll(".person-select");
@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const headersRow = document.getElementById("compare-headers");
       const body = document.getElementById("compare-body");
 
-      // Hide table if no one is selected
       if (selectedNames.length === 0) {
         table.style.display = "none";
         return;
@@ -37,14 +36,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       table.style.display = "table";
 
-      // 1. Build the Table Headers
       let headersHTML = `<th class="text-start">Stat</th>`;
       selectedNames.forEach((name) => {
         headersHTML += `<th class="text-end">${name}</th>`;
       });
       headersRow.innerHTML = headersHTML;
 
-      // 2. Define the stats we want to compare based on your data.persons keys
       const statsToCompare = [
         { key: "total_messages", label: "Total Messages" },
         { key: "total_words", label: "Total Words" },
@@ -52,7 +49,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         { key: "activity_concentration", label: "Activity Focus" },
       ];
 
-      // 3. Build the Table Rows
       let bodyHTML = "";
       statsToCompare.forEach((stat) => {
         bodyHTML += `<tr><td class="text-start text-capitalize fw-bold">${stat.label}</td>`;
@@ -62,7 +58,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           let val =
             personData[stat.key] !== undefined ? personData[stat.key] : 0;
 
-          // Add formatting like % or min
           if (stat.key === "avg_response_time") val += " min";
           if (stat.key === "activity_concentration") val += "%";
 
@@ -75,34 +70,57 @@ document.addEventListener("DOMContentLoaded", async () => {
       body.innerHTML = bodyHTML;
     }
   });
-  // ---------------------------------------------------------
 
   function build_group_slides() {
-    // 1.Busy Day Slide
+    // 1. Busy Day Slide with Chart
+    const topDays = data.group.busiest_days; // For the Top 5 Table
+
+    // Fallback just in case date_message_count isn't available yet
+    let all_days_raw = data.group.date_message_count || topDays;
+
+    // Handle both formats: array of arrays [['date', count]] OR an object {'date': count}
+    let all_days_array = Array.isArray(all_days_raw)
+      ? all_days_raw
+      : Object.entries(all_days_raw);
+
+    // Sort chronologically (Assumes DD/MM/YYYY)
+    const chartDays = [...all_days_array].sort((a, b) => {
+      const [d1, m1, y1] = a[0].split("/");
+      const [d2, m2, y2] = b[0].split("/");
+      return new Date(y1, m1 - 1, d1) - new Date(y2, m2 - 1, d2);
+    });
+
+    // Stores data globally so the render function can access it(no let heh)
+    window.chartLabels = chartDays.map((d) => d[0].slice(0, 5)); // Show DD/MM
+    window.chartData = chartDays.map((d) => d[1]);
+
     let html = `
-     <p class="title-text">BUSIEST DAYS</p>
-     <p class="subtitle-text">y'all genuinely couldn't stop yapping(study for CS108 guys)</p>
-     <table class="stats-table">
-     <thead>
-       <tr>
-         <th>Rank</th>
-         <th class="text-start">Date</th>
-         <th class="text-end">Count</th>
-        </tr>
-      </thead>
-      <tbody>`;
+     <div class="slide-container d-flex flex-column align-items-center w-100 h-100 p-4">
+       <p class="title-text">BUSIEST DAYS</p>
+       <p class="subtitle-text">y'all genuinely couldn't stop yapping(study for CS108 guys)</p>
+       
+       <div class="w-100 mb-4" style="max-width: 600px; height: 200px; position: relative;">
+         <canvas id="busiestChart"></canvas>
+       </div>
 
-    const days = data.group.busiest_days;
-
-    for (let i = 0; i < days.length; i++) {
-      const date = days[i][0];
-      const count = days[i][1];
+       <table class="stats-table w-100">
+       <thead>
+         <tr>
+           <th>Rank</th>
+           <th class="text-start">Date</th>
+           <th class="text-end">Count</th>
+          </tr>
+        </thead>
+        <tbody>`;
+    for (let i = 0; i < topDays.length; i++) {
+      const date = topDays[i][0];
+      const count = topDays[i][1];
 
       let rowClass = "";
       if (i === 0) rowClass = "first";
       else if (i === 1) rowClass = "second";
       else if (i === 2) rowClass = "third";
-      emoji_list = ["🥇", "🥈", "🥉", "4", "5"];
+      let emoji_list = ["🥇", "🥈", "🥉", "4", "5"];
 
       html += `
     <tr class="${rowClass}">
@@ -113,8 +131,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     html += `
-      </tbody>
-    </table>`;
+        </tbody>
+      </table>
+    </div>`;
 
     slides.push(html);
     background_classes.push("busy-day");
@@ -142,7 +161,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (i === 0) rowClass = "first";
       else if (i === 1) rowClass = "second";
       else if (i === 2) rowClass = "third";
-      emoji_list = ["👻", "2", "3", "4", "5"];
+      let emoji_list = ["👻", "2", "3", "4", "5"];
 
       html2 += `
      <tr class="${rowClass}">
@@ -181,7 +200,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (i === 0) rowClass = "first";
       else if (i === 1) rowClass = "second";
       else if (i === 2) rowClass = "third";
-      emoji_list = ["🔥", "2", "3", "4", "5"];
+      let emoji_list = ["🔥", "2", "3", "4", "5"];
 
       html3 += `
      <tr class="${rowClass}">
@@ -220,7 +239,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (i === 0) rowClass = "first";
       else if (i === 1) rowClass = "second";
       else if (i === 2) rowClass = "third";
-      emoji_list = ["🦉", "2", "3", "4", "5"];
+      let emoji_list = ["🦉", "2", "3", "4", "5"];
 
       html4 += `
      <tr class="${rowClass}">
@@ -258,7 +277,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (i === 0) rowClass = "first";
       else if (i === 1) rowClass = "second";
       else if (i === 2) rowClass = "third";
-      emoji_list = ["💬", "2", "3", "4", "5"];
+      let emoji_list = ["💬", "2", "3", "4", "5"];
 
       html5 += `
       <tr class="${rowClass}">
@@ -277,7 +296,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // 7. Person Selector Slide — clicking a name jumps to their profile
     const persons = Object.keys(data.persons);
-    const person_slide_start = slides.length + 1; // Needs to account for comparison slide too now
+    const person_slide_start = slides.length + 1;
     let selector_html = `
       <p class="title-text">PERSONAL WRAPS</p>
       <p class="subtitle-text">tap a name to jump to their stats 👇</p>
@@ -286,7 +305,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           .map(
             (name, i) => `
           <button class="person-btn" onclick="goto_person(${
-            person_slide_start + i + 1 // +1 because we are adding the comparison slide before person slides
+            person_slide_start + i + 1
           })">${name}</button>
         `,
           )
@@ -296,8 +315,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     slides.push(selector_html);
     background_classes.push("owl");
   }
+
+  // --- Build Comparison Slide ---
   function build_comparison_slide() {
     const persons = Object.keys(data.persons);
+
     let optionsHTML = `<option value="">Select Person...</option>`;
     persons.forEach((name) => {
       optionsHTML += `<option value="${name}">${name}</option>`;
@@ -326,9 +348,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       </div>`;
 
     slides.push(html);
-    background_classes.push("convo"); // Assign a background gradient
+    background_classes.push("convo");
   }
-  // -----------------------------------
 
   window.goto_person = function (target_index) {
     index = target_index;
@@ -375,7 +396,6 @@ document.addEventListener("DOMContentLoaded", async () => {
              <tbody>`;
 
       const sortedAchievements = [...stats.person_achievements].sort(
-        // Lambda functions are fun
         (a, b) => a[1] - b[1],
       );
 
@@ -431,19 +451,74 @@ document.addEventListener("DOMContentLoaded", async () => {
       location.reload();
       return;
     }
+
     slide.innerHTML = slides[index];
     slide_screen.className = `screen d-flex flex-column w-100 h-100 position-absolute top-0 start-0 z-2 ${background_classes[index % background_classes.length]}`;
 
     slide.classList.remove("slide-anim");
-    // delay for reloading slide animation
+
     setTimeout(() => {
       slide.classList.add("slide-anim");
+
+      // --- Render Chart.js ---
+      const canvas = document.getElementById("busiestChart");
+      if (canvas) {
+        if (window.busiestChartInstance) {
+          window.busiestChartInstance.destroy();
+        }
+
+        Chart.defaults.color = "#ffffff";
+
+        // Check if there are a ton of points; if so, hide the dots so the line is smooth
+        const hidePoints = window.chartData.length > 30;
+
+        window.busiestChartInstance = new Chart(canvas, {
+          type: "line",
+          data: {
+            labels: window.chartLabels,
+            datasets: [
+              {
+                label: "Messages",
+                data: window.chartData,
+                borderColor: "#00e676",
+                backgroundColor: "rgba(0, 230, 118, 0.2)",
+                borderWidth: 2,
+                pointBackgroundColor: "#ffffff",
+                pointRadius: hidePoints ? 0 : 3, // Hides points if there are too many dates
+                fill: true,
+                tension: 0.3,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+            },
+            scales: {
+              x: {
+                grid: { display: false },
+                ticks: {
+                  maxTicksLimit: 12, // Limits X-axis labels so they don't overlap
+                },
+              },
+              y: {
+                beginAtZero: true,
+                grid: { color: "rgba(255, 255, 255, 0.1)" },
+              },
+            },
+          },
+        });
+      }
     }, 10);
 
     slides.forEach((_, i) => {
-      bar = document.getElementById(`progress-${i}`);
-      if (i <= index) bar.classList.add("done");
-      else bar.classList.remove("done");
+      let bar = document.getElementById(`progress-${i}`);
+      if (bar) {
+        if (i <= index) bar.classList.add("done");
+        else bar.classList.remove("done");
+      }
     });
   }
 
@@ -461,8 +536,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   slide_screen.addEventListener("click", (e) => {
     if (e.target.closest("table")) return;
-    if (e.target.closest(".person-btn")) return; // don't advance when clicking person buttons
-    if (e.target.closest("select")) return; // NEW: don't advance when clicking dropdowns
+    if (e.target.closest(".person-btn")) return;
+    if (e.target.closest("select")) return;
+    if (e.target.closest("canvas")) return;
 
     const xpos = e.clientX;
     const swidth = window.innerWidth;
