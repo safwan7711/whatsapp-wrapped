@@ -352,7 +352,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   window.goto_person = function (target_index) {
-    index = target_index;
+    index = target_index - 1;
     render_slide(index);
   };
 
