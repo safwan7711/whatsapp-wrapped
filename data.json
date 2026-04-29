@@ -91,34 +91,6 @@
       ]
     ],
     "person_achievements": {
-      "Nishit": [
-        [
-          "Ghost",
-          5
-        ],
-        [
-          "Hype person",
-          1
-        ],
-        [
-          "Conversation starter",
-          5
-        ]
-      ],
-      "Madhu": [
-        [
-          "Ghost",
-          1
-        ],
-        [
-          "Hype person",
-          5
-        ],
-        [
-          "Conversation starter",
-          2
-        ]
-      ],
       "Meka": [
         [
           "Ghost",
@@ -133,6 +105,20 @@
           1
         ]
       ],
+      "Nishit": [
+        [
+          "Ghost",
+          5
+        ],
+        [
+          "Hype person",
+          1
+        ],
+        [
+          "Conversation starter",
+          5
+        ]
+      ],
       "Utkarsh": [
         [
           "Ghost",
@@ -145,6 +131,20 @@
         [
           "Conversation starter",
           4
+        ]
+      ],
+      "Madhu": [
+        [
+          "Ghost",
+          1
+        ],
+        [
+          "Hype person",
+          5
+        ],
+        [
+          "Conversation starter",
+          2
         ]
       ],
       "Shreyas": [
@@ -163,4 +163,228 @@
       ]
     }
   },
-  "date_message_count": 
+  "date_message_count": [
+    [
+      "22/03/2026",
+      6
+    ],
+    [
+      "23/03/2026",
+      20
+    ],
+    [
+      "24/03/2026",
+      26
+    ],
+    [
+      "25/03/2026",
+      20
+    ],
+    [
+      "26/03/2026",
+      27
+    ],
+    [
+      "27/03/2026",
+      20
+    ],
+    [
+      "28/03/2026",
+      26
+    ],
+    [
+      "29/03/2026",
+      30
+    ],
+    [
+      "30/03/2026",
+      25
+    ],
+    [
+      "31/03/2026",
+      19
+    ],
+    [
+      "01/04/2026",
+      42
+    ],
+    [
+      "02/04/2026",
+      28
+    ],
+    [
+      "03/04/2026",
+      27
+    ],
+    [
+      "04/04/2026",
+      36
+    ],
+    [
+      "05/04/2026",
+      31
+    ],
+    [
+      "06/04/2026",
+      27
+    ],
+    [
+      "07/04/2026",
+      20
+    ],
+    [
+      "08/04/2026",
+      34
+    ],
+    [
+      "09/04/2026",
+      20
+    ],
+    [
+      "10/04/2026",
+      16
+    ],
+    [
+      "11/04/2026",
+      37
+    ],
+    [
+      "12/04/2026",
+      25
+    ],
+    [
+      "13/04/2026",
+      26
+    ],
+    [
+      "14/04/2026",
+      27
+    ]
+  ],
+  "persons": {
+    "Nishit": {
+      "total_messages": 156,
+      "total_words": 1282,
+      "most_used_emojis": [
+        "🤡",
+        "👍",
+        "😢"
+      ],
+      "avg_response_time": 26.0,
+      "activity_concentration": 58.89,
+      "person_achievements": [
+        [
+          "Ghost",
+          5
+        ],
+        [
+          "Hype person",
+          1
+        ],
+        [
+          "Conversation starter",
+          5
+        ]
+      ]
+    },
+    "Shreyas": {
+      "total_messages": 97,
+      "total_words": 256,
+      "most_used_emojis": [
+        "😂",
+        "😭",
+        "💀"
+      ],
+      "avg_response_time": 49.0,
+      "activity_concentration": 34.07,
+      "person_achievements": [
+        [
+          "Ghost",
+          3
+        ],
+        [
+          "Hype person",
+          4
+        ],
+        [
+          "Conversation starter",
+          3
+        ]
+      ]
+    },
+    "Meka": {
+      "total_messages": 76,
+      "total_words": 185,
+      "most_used_emojis": [
+        "🥺",
+        "🥲"
+      ],
+      "avg_response_time": 44.5,
+      "activity_concentration": 36.96,
+      "person_achievements": [
+        [
+          "Ghost",
+          2
+        ],
+        [
+          "Hype person",
+          3
+        ],
+        [
+          "Conversation starter",
+          1
+        ]
+      ]
+    },
+    "Utkarsh": {
+      "total_messages": 255,
+      "total_words": 2358,
+      "most_used_emojis": [
+        "😭",
+        "😂",
+        "🥀"
+      ],
+      "avg_response_time": 30.5,
+      "activity_concentration": 92.29,
+      "person_achievements": [
+        [
+          "Ghost",
+          4
+        ],
+        [
+          "Hype person",
+          2
+        ],
+        [
+          "Conversation starter",
+          4
+        ]
+      ]
+    },
+    "Madhu": {
+      "total_messages": 31,
+      "total_words": 74,
+      "most_used_emojis": [
+        "🥀",
+        "😭",
+        "💀"
+      ],
+      "avg_response_time": 114.0,
+      "activity_concentration": 12.37,
+      "person_achievements": [
+        [
+          "Ghost",
+          1
+        ],
+        [
+          "Hype person",
+          5
+        ],
+        [
+          "Conversation starter",
+          2
+        ]
+      ]
+    }
+  }
+}

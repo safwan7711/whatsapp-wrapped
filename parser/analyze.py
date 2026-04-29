@@ -263,8 +263,6 @@ def date_message_count(messages):
             date_count[date_str] = 1
     return date_count.items()
 
-def 
-
 def json_format(messages):
     output = {
         "group": {
