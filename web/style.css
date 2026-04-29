@@ -1,24 +1,38 @@
 body {
-    font-family: "Times New Roman", Times, serif;
-    user-select: none;
-    /* Prevents text selection while tapping */
+  font-family: "Times New Roman", Times, serif;
+  user-select: none;
+  /* Prevents text selection while tapping */
 }
 
 /* Landing Gradient */
 #landing {
-    background: linear-gradient(135deg, #64ff41, #ae5748);
+  background: linear-gradient(135deg, #64ff41, #ae5748);
 }
 
-/* Slide Background Gradients (!important ensures bootstrap doesn't override them) */
-.busy-day  { background: linear-gradient(135deg, #8E2DE2, #4A00E0) !important; }
-.ghost { background: linear-gradient(135deg, #141414, #2c2c54) !important; }
-.hype  { background: linear-gradient(135deg, #fc4a1a, #f7b733) !important; color: #000 !important; }
-.owl  { background: linear-gradient(135deg, #0f0c29, #302b63) !important; }
-.convo { background: linear-gradient(135deg, #11998e, #38ef7d) !important; color: #000 !important; }
+/* Slide Gradients*/
+.busy-day {
+  background: linear-gradient(135deg, #8e2de2, #4a00e0) !important;
+}
+.ghost {
+  background: linear-gradient(135deg, #141414, #2c2c54) !important;
+}
+.hype {
+  background: linear-gradient(135deg, #211afc, #bf26b3) !important;
+  color: #000 !important;
+}
+.owl {
+  background: linear-gradient(135deg, #13d0b7, #302b63) !important;
+}
+.convo {
+  background: linear-gradient(135deg, #11998e, #ef38e3) !important;
+  color: #000 !important;
+}
 
 .title-text {
   margin-bottom: 4px;
-  font: 800 30px/1 "Times New Roman", serif;
+  font:
+    800 30px/1 "Times New Roman",
+    serif;
   letter-spacing: 3px;
   text-transform: uppercase;
 }
@@ -31,91 +45,200 @@ body {
   font-style: italic;
 }
 
-.busy-table {
+.stats-table {
   width: min(860px, 92%);
   border-collapse: separate;
   border-spacing: 0 8px;
 }
 
-.busy-table th,
-.busy-table td {
+.stats-table th,
+.stats-table td {
   padding: 12px 16px;
 }
 
-.busy-table th {
+.stats-table th {
   background: rgba(138, 127, 127, 0.18);
   font-size: 20px;
 }
 
 /* Default row color (slides 3,4,5 override below) */
-.busy-table td { background: rgba(135, 70, 6, 0.9); }
-.ghost-table td { background: rgba(60, 60, 100, 0.85); }
-.hype-table  td { background: rgba(180, 60, 10, 0.85); }
-.owl-table   td { background: rgba(30, 20, 80, 0.85); }
-.convo-table td { background: rgba(10, 100, 80, 0.85); color: white; }
+.stats-table td {
+  background: rgba(135, 70, 6, 0.9);
+}
+.ghost-table td {
+  background: rgba(60, 60, 100, 0.85);
+}
+.hype-table td {
+  background: rgba(180, 60, 10, 0.85);
+}
+.owl-table td {
+  background: rgba(30, 20, 80, 0.85);
+}
+.convo-table td {
+  background: rgba(10, 100, 80, 0.85);
+  color: white;
+}
 
-.busy-table .rank { width: 88px; }
-.busy-table .count { width: 100px; text-align: right; }
-.busy-table .date { text-align: left; }
+.stats-table .rank {
+  width: 88px;
+}
+.stats-table .count {
+  width: 100px;
+  text-align: right;
+}
+.stats-table .date {
+  text-align: left;
+}
 
-.busy-table td:first-child { border-radius: 16px 0 0 16px; }
-.busy-table td:last-child  { border-radius: 0 16px 16px 0; }
+.stats-table td:first-child {
+  border-radius: 16px 0 0 16px;
+}
+.stats-table td:last-child {
+  border-radius: 0 16px 16px 0;
+}
 
-.busy-table tbody td {
+.stats-table tbody td {
   font-size: 21px;
   font-weight: 700;
   padding: 12px 8px;
-}
 
-/* First row: gold — same for all slides */
-.busy-table tr.first td {
-  font-size: 40px;
-  background: rgba(255, 217, 0, 0.83);
-  color: #000;
-  padding: 40px 30px;
-}
+  .stats-table tr.first td {
+    font-size: 34px;
+    /* Decreased from 40px */
+    background: rgba(255, 217, 0, 0.83);
+    color: #000;
+    padding: 24px 20px;
+  }
 
-/* Second row: silver — same for all slides */
-.busy-table tr.second td {
-  font-size: 27px;
-  background: rgb(105, 105, 105);
-  color: #fff;
-  padding: 26px 20px;
-}
+  .stats-table tr.second td {
+    font-size: 27px;
+    background: rgb(105, 105, 105);
+    color: #fff;
+    padding: 18px 14px;
+  }
 
-.progress-bar-wrapper {
+  /* Third row: bronze — made slightly bigger than default rows */
+  .stats-table tr.third td {
+    font-size: 24px;
+    /* Increased from the default 21px */
+    background: rgba(205, 127, 50, 0.85);
+    /* Bronze background to match the theme */
+    color: #fff;
+    padding: 16px 12px;
+    /* Slightly more padding than default */
+  }
+
+  .progress-bar-wrapper {
     flex-grow: 1;
     height: 4px;
     background-color: rgba(255, 255, 255, 0.3);
     /* Slightly brighter wrapper */
     border-radius: 2px;
-}
+  }
 
-.progress-bar-fill {
+  .progress-bar-fill {
     height: 100%;
     width: 0%;
     background-color: #ffffff;
     /* FIX: Was #070606 (Black), now White */
     transition: width 0.2s linear;
-}
+  }
 
-.progress-bar-fill.done {
+  .progress-bar-fill.done {
     width: 100%;
-}
+  }
 
-/* Missing Slide Animation added! */
-.slide-anim {
+  /* Missing Slide Animation added! */
+  .slide-anim {
     animation: slideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
+  }
 
-@keyframes slideUp {
+  @keyframes slideUp {
     0% {
-        opacity: 0;
-        transform: translateY(30px);
+      opacity: 0;
+      transform: translateY(30px);
     }
 
     100% {
-        opacity: 1;
-        transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
+  }
+
+  /* Scrollable container for complex slides */
+  .slide-container {
+    max-width: 1200px;
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 20px;
+  }
+
+  /* Hide scrollbar for a cleaner presentation UI */
+  .slide-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .slide-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Make tables take full width of their flex containers */
+  .stats-table.w-100 {
+    width: 100% !important;
+  }
+
+  @media (max-width: 768px) {
+    .title-text {
+      font-size: 24px;
+      letter-spacing: 2px;
+    }
+
+    .subtitle-text {
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    /* Shrink the core table padding */
+    .stats-table th,
+    .stats-table td {
+      padding: 8px 10px;
+    }
+
+    /* Shrink default text size */
+    .stats-table th {
+      font-size: 15px;
+    }
+
+    .stats-table tbody td {
+      font-size: 16px;
+      padding: 8px 6px;
+    }
+
+    /* Adjust the massive First/Second Place Rows */
+    .stats-table tr.first td {
+      font-size: 20px;
+      padding: 14px 10px;
+    }
+
+    .stats-table tr.second td {
+      font-size: 18px;
+      padding: 12px 10px;
+    }
+
+    .stats-table tr.third td {
+      font-size: 16px;
+      padding: 10px 8px;
+    }
+
+    /* Adjust column widths to give name/date more space */
+    .stats-table .rank {
+      width: 45px;
+    }
+
+    .stats-table .count {
+      width: 70px;
+    }
+  }
 }

@@ -9,12 +9,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   index = 0;
   slides = []; //Stores html content of each slide
   background_classes = []; // This stores the class for each slide
+  themes = [
+    // Imma use these themes for person slides too
+    { bg: "busy-day", tb: "" },
+    { bg: "ghost", tb: "ghost-table" },
+    { bg: "hype", tb: "hype-table" },
+    { bg: "owl", tb: "owl-table" },
+    { bg: "convo", tb: "convo-table" },
+  ];
   function build_group_slides() {
     // 1.Busy Day Slide
     let html = `
      <p class="title-text">BUSIEST DAYS</p>
-     <p class="subtitle-text">y'all really couldn't put the phone down 📱</p>
-     <table class="busy-table">
+     <p class="subtitle-text">y'all genuinely couldn't stop yapping(study for CS108 guys)</p>
+     <table class="stats-table">
      <thead>
        <tr>
          <th>Rank</th>
@@ -33,6 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       let rowClass = "";
       if (i === 0) rowClass = "first";
       else if (i === 1) rowClass = "second";
+      else if (i === 2) rowClass = "third";
       emoji_list = ["🥇", "🥈", "🥉", "4", "5"];
 
       html += `
@@ -49,12 +58,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     slides.push(html);
     background_classes.push("busy-day");
-    // 2. Ghost Slide
 
+    // 2. Ghost Slide
     let html2 = `
     <p class="title-text">GHOSTS</p>
     <p class="subtitle-text">who got left on read the most 👻</p>
-    <table class="busy-table ghost-table">
+    <table class="stats-table ghost-table">
     <thead>
       <tr>
         <th>Rank</th>
@@ -72,6 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       let rowClass = "";
       if (i === 0) rowClass = "first";
       else if (i === 1) rowClass = "second";
+      else if (i === 2) rowClass = "third";
       emoji_list = ["👻", "2", "3", "4", "5"];
 
       html2 += `
@@ -88,11 +98,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     slides.push(html2);
     background_classes.push("ghost");
+
     // 3. Hypeness Slide
     let html3 = `
     <p class="title-text">HYPEST PERSONS</p>
     <p class="subtitle-text">always first to reply, no life confirmed ⚡</p>
-    <table class="busy-table hype-table">
+    <table class="stats-table hype-table">
     <thead>
       <tr>
         <th>Rank</th>
@@ -109,6 +120,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       let rowClass = "";
       if (i === 0) rowClass = "first";
       else if (i === 1) rowClass = "second";
+      else if (i === 2) rowClass = "third";
       emoji_list = ["🔥", "2", "3", "4", "5"];
 
       html3 += `
@@ -125,11 +137,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     slides.push(html3);
     background_classes.push("hype");
+
     // 4. Night Owl Slide
     let html4 = `
     <p class="title-text">NIGHT OWLS</p>
     <p class="subtitle-text">who was texting at 3am 🌙</p>
-    <table class="busy-table owl-table">
+    <table class="stats-table owl-table">
     <thead>
       <tr>
         <th>Rank</th>
@@ -146,6 +159,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       let rowClass = "";
       if (i === 0) rowClass = "first";
       else if (i === 1) rowClass = "second";
+      else if (i === 2) rowClass = "third";
       emoji_list = ["🦉", "2", "3", "4", "5"];
 
       html4 += `
@@ -162,11 +176,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     slides.push(html4);
     background_classes.push("owl");
+
     // 5. Conversation Starter Slide
     let html5 = `
     <p class="title-text">CONVERSATION STARTERS</p>
     <p class="subtitle-text">who saved the dead chat every time 🔥</p>
-    <table class="busy-table convo-table">
+    <table class="stats-table convo-table">
     <thead>
       <tr>
         <th>Rank</th>
@@ -182,6 +197,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       let rowClass = "";
       if (i === 0) rowClass = "first";
       else if (i === 1) rowClass = "second";
+      else if (i === 2) rowClass = "third";
       emoji_list = ["💬", "2", "3", "4", "5"];
 
       html5 += `
@@ -199,6 +215,89 @@ document.addEventListener("DOMContentLoaded", async () => {
     slides.push(html5);
     background_classes.push("convo");
   }
+
+  function build_person_slides() {
+    let t_idx = 0;
+
+    for (const [name, stats] of Object.entries(data.persons)) {
+      const theme = themes[t_idx % themes.length];
+
+      let html = `
+      <p class="title-text">${name}'S WRAPPED</p>
+      <p class="subtitle-text">your personal stats 📊</p>
+      <div class="row w-100 justify-content-center slide-container mx-auto">
+        
+        <div class="col-12 col-lg-6 mb-4 d-flex flex-column align-items-center">
+          <table class="stats-table ${theme.tb} w-100">
+            <thead>
+              <tr>
+                <th class="text-start">Stat</th>
+                <th class="text-end">Value</th>
+               </tr>
+             </thead>
+             <tbody>
+               <tr><td class="text-start">Total Messages</td><td class="text-end">${stats.total_messages}</td></tr>
+               <tr><td class="text-start">Total Words</td><td class="text-end">${stats.total_words}</td></tr>
+               <tr><td class="text-start">Avg Response Time</td><td class="text-end">${stats.avg_response_time} min</td></tr>
+               <tr><td class="text-start">Activity Focus</td><td class="text-end">${stats.activity_concentration}%</td></tr>
+               <tr><td class="text-start">Top Emojis</td><td class="text-end">${stats.most_used_emojis.join(" ")}</td></tr>
+             </tbody>
+           </table>
+        </div>
+
+        <div class="col-12 col-lg-6 mb-4 d-flex flex-column align-items-center">
+          <table class="stats-table ${theme.tb} w-100">
+            <thead>
+              <tr>
+                <th class="text-start">Achievement</th>
+                <th class="text-end">Rank</th>
+               </tr>
+             </thead>
+             <tbody>`;
+
+      const sortedAchievements = [...stats.person_achievements].sort(
+        // Lambda functions are fun
+        (a, b) => a[1] - b[1],
+      );
+
+      for (let i = 0; i < sortedAchievements.length; i++) {
+        const achName = sortedAchievements[i][0];
+        const rankNum = sortedAchievements[i][1];
+
+        let rowClass = "";
+        let rankText = rankNum;
+        if (rankNum === 1) {
+          rowClass = "first";
+          rankText = "🥇 1";
+        } else if (rankNum === 2) {
+          rowClass = "second";
+          rankText = "🥈 2";
+        } else if (rankNum === 3) {
+          rowClass = "third";
+          rankText = "🥉 3";
+        }
+
+        html += ` <tr class="${rowClass}">
+          <td class="text-start">${achName}</td>
+          <td class="text-end">${rankText}</td>
+        </tr>`;
+      }
+      if (sortedAchievements.length == 0)
+        html = `lock in, u have zero achivements 🥀`;
+
+      html += `
+             </tbody>
+           </table>
+        </div>
+
+      </div>`;
+
+      slides.push(html);
+      background_classes.push(theme.bg);
+      t_idx++;
+    }
+  }
+
   function render_progress() {
     progress_bar.innerHTML = slides
       .map(
@@ -207,29 +306,31 @@ document.addEventListener("DOMContentLoaded", async () => {
       )
       .join("");
   }
+
   function render_slide(index) {
     if (index >= slides.length) {
-      location.reload(); // Return to landing page if it reaches end of slideshow
+      location.reload();
       return;
     }
 
-    // Restart CSS animation
     slide.classList.remove("slide-anim");
     void slide.offsetWidth;
     slide.classList.add("slide-anim");
 
     slide.innerHTML = slides[index];
     slide_screen.className = `screen d-flex flex-column w-100 h-100 position-absolute top-0 start-0 z-2 ${background_classes[index % background_classes.length]}`;
-    // Update the progress bar
+
     slides.forEach((_, i) => {
       bar = document.getElementById(`progress-${i}`);
       if (i <= index) bar.classList.add("done");
       else bar.classList.remove("done");
     });
   }
+
   if (start_btn) {
     start_btn.addEventListener("click", () => {
       build_group_slides();
+      build_person_slides();
       render_progress();
       landing.classList.replace("d-flex", "d-none");
       slide_screen.classList.remove("d-none");
@@ -238,9 +339,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   slide_screen.addEventListener("click", (e) => {
+    if (e.target.closest("table")) return; // makes sure it doesnt skip slides on mobile
+
     const xpos = e.clientX;
     const swidth = window.innerWidth;
-    // If click pos in left 30% slide goes back, else front
+
     if (xpos < swidth * 0.3) {
       if (index > 0) {
         index--;
