@@ -91,6 +91,34 @@
       ]
     ],
     "person_achievements": {
+      "Nishit": [
+        [
+          "Ghost",
+          5
+        ],
+        [
+          "Hype person",
+          1
+        ],
+        [
+          "Conversation starter",
+          5
+        ]
+      ],
+      "Madhu": [
+        [
+          "Ghost",
+          1
+        ],
+        [
+          "Hype person",
+          5
+        ],
+        [
+          "Conversation starter",
+          2
+        ]
+      ],
       "Meka": [
         [
           "Ghost",
@@ -132,161 +160,7 @@
           "Conversation starter",
           3
         ]
-      ],
-      "Nishit": [
-        [
-          "Ghost",
-          5
-        ],
-        [
-          "Hype person",
-          1
-        ],
-        [
-          "Conversation starter",
-          5
-        ]
-      ],
-      "Madhu": [
-        [
-          "Ghost",
-          1
-        ],
-        [
-          "Hype person",
-          5
-        ],
-        [
-          "Conversation starter",
-          2
-        ]
       ]
     }
   },
-  "persons": {
-    "Nishit": {
-      "total_messages": 156,
-      "total_words": 1282,
-      "most_used_emojis": [
-        "🤡",
-        "👍",
-        "😢"
-      ],
-      "avg_response_time": 26.0,
-      "activity_concentration": 58.89,
-      "person_achievements": [
-        [
-          "Ghost",
-          5
-        ],
-        [
-          "Hype person",
-          1
-        ],
-        [
-          "Conversation starter",
-          5
-        ]
-      ]
-    },
-    "Shreyas": {
-      "total_messages": 97,
-      "total_words": 256,
-      "most_used_emojis": [
-        "😂",
-        "😭",
-        "💀"
-      ],
-      "avg_response_time": 49.0,
-      "activity_concentration": 34.07,
-      "person_achievements": [
-        [
-          "Ghost",
-          3
-        ],
-        [
-          "Hype person",
-          4
-        ],
-        [
-          "Conversation starter",
-          3
-        ]
-      ]
-    },
-    "Meka": {
-      "total_messages": 76,
-      "total_words": 185,
-      "most_used_emojis": [
-        "🥺",
-        "🥲"
-      ],
-      "avg_response_time": 44.5,
-      "activity_concentration": 36.96,
-      "person_achievements": [
-        [
-          "Ghost",
-          2
-        ],
-        [
-          "Hype person",
-          3
-        ],
-        [
-          "Conversation starter",
-          1
-        ]
-      ]
-    },
-    "Utkarsh": {
-      "total_messages": 255,
-      "total_words": 2358,
-      "most_used_emojis": [
-        "😭",
-        "😂",
-        "🥀"
-      ],
-      "avg_response_time": 30.5,
-      "activity_concentration": 92.29,
-      "person_achievements": [
-        [
-          "Ghost",
-          4
-        ],
-        [
-          "Hype person",
-          2
-        ],
-        [
-          "Conversation starter",
-          4
-        ]
-      ]
-    },
-    "Madhu": {
-      "total_messages": 31,
-      "total_words": 74,
-      "most_used_emojis": [
-        "🥀",
-        "😭",
-        "💀"
-      ],
-      "avg_response_time": 114.0,
-      "activity_concentration": 12.37,
-      "person_achievements": [
-        [
-          "Ghost",
-          1
-        ],
-        [
-          "Hype person",
-          5
-        ],
-        [
-          "Conversation starter",
-          2
-        ]
-      ]
-    }
-  }
-}
+  "date_message_count": 

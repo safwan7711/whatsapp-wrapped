@@ -253,6 +253,17 @@ def person_achievements(messages):
                 pa[person].append(("Conversation starter",i+1))
     return pa
     
+def date_message_count(messages):
+    date_count = {}
+    for message in messages:
+        date_str = message['datetime'].strftime("%d/%m/%Y")
+        if date_str in date_count:
+            date_count[date_str] += 1
+        else:
+            date_count[date_str] = 1
+    return date_count.items()
+
+def 
 
 def json_format(messages):
     output = {
@@ -265,6 +276,7 @@ def json_format(messages):
             "conversation_starters": conversation_starters(messages,1,2,2),# time range of 2 hours.
             "person_achievements": person_achievements(messages)
         },
+        "date_message_count": list(date_message_count(messages)),
         "persons": {}
     }
     for person in total_messages(messages).keys():
